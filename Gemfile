@@ -2,7 +2,7 @@ source 'http://rubygems.org'
 
 gem 'rails', '3.1.0'
 
-gem 'em-http-request'
+# gem 'em-http-request'
 gem "thin"
 
 

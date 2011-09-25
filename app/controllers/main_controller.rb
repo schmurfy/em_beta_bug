@@ -12,17 +12,18 @@ private
       raise "Trying to issue an HTTP Request from the EventMachine thread, aborting..."
     end
     
-    # uri = URI.parse(url)
-    # http = EventMachine::Protocols::HttpClient.request(
-    #     :host => uri.host,
-    #     :port => uri.port,
-    #     :request => uri.path
-    #   )
+    uri = URI.parse(url)
+    http = EventMachine::Protocols::HttpClient.request(
+        :host => uri.host,
+        :port => uri.port,
+        :request => uri.path
+      )
     
-    http = EM::HttpRequest.new(url).get(:head => {
-        'user-agent'  => "Mac FireFox",
-        'cookie'      => 'birthtime=-2208959999' # this takes care of the age check
-      })
+    # does not work either
+    # http = EM::HttpRequest.new(url).get(:head => {
+    #     'user-agent'  => "Mac FireFox",
+    #     'cookie'      => 'birthtime=-2208959999' # this takes care of the age check
+    #   })
 
     http.callback do
       Rails.logger.debug("callback, waking up thread #{'%#x' % Thread.current.object_id}")
@@ -38,10 +39,11 @@ private
     sleep
     
     Rails.logger.debug("[#{'%#x' % Thread.current.object_id}]Thread woken up")
-        
-    if http.error
-      raise PageLoadFailed, http
-    end
+    
+    # test if loading was a success or not 
+    # if http.error
+    #   raise PageLoadFailed, http
+    # end
     
     http
   end
